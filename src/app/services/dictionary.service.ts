@@ -1,27 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environments";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DictionaryService {
   wordsDatabase: string[] = [];
+  englishWords: string[] = [];
+  japaneseWords: string[] = [];
   spreadsheetID: string = environment.spreadsheetID;
   sheetRange: string = environment.sheetRange;
   apiKey: string = environment.apiKey;
 
-  englishWords: string[] = [];
-  japaneseWords: string[] = [];
+  private englishWordsSubject = new BehaviorSubject<string[]>([]);
+  private japaneseWordsSubject = new BehaviorSubject<string[]>([]);
+
+  englishWords$ = this.englishWordsSubject.asObservable();
+  japaneseWords$ = this.japaneseWordsSubject.asObservable();
 
   constructor(private http: HttpClient) {
     this.fetchWords();
-    this.processWords(this.wordsDatabase);
   }
 
   private processWords(words: string[]): void {
-    this.englishWords = this.getEngWords(this.wordsDatabase);
-    this.japaneseWords = this.getJapWords(this.wordsDatabase);
+    this.englishWords = this.getEngWords(words);
+    this.japaneseWords = this.getJapWords(words);
+    this.englishWordsSubject.next(this.englishWords);
+    this.japaneseWordsSubject.next(this.japaneseWords);
   }
 
   private fetchWords() {
@@ -32,7 +39,8 @@ export class DictionaryService {
         if (response.values) {
           const rows = response.values;
           this.wordsDatabase = rows.flat();
-          console.log('Successfully extracted Google Sheet data:', this.wordsDatabase);
+          this.processWords(this.wordsDatabase)
+          console.log('DATA EXTRACT & PROCESS SUCCESS :', this.englishWords, this.japaneseWords);
         } else {
           console.error('No data found in response:', response);
         }

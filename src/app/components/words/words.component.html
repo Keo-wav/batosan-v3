@@ -1,1 +1,21 @@
-<p>words works!</p>
+<div id="container">
+  <div id="search">
+    <input type="text" placeholder=" Type here if ur a cnut">
+    <a (click)="search()"><i class="fa-solid fa-magnifying-glass"></i></a>
+  </div>
+  <br>
+  <div id="columns">
+    <div class="column">
+      <h3>ENGLISH</h3>
+      <ul id="englishWords">
+        <li class="word" *ngFor="let word of englishWords">{{ word }}</li>
+      </ul>
+    </div>
+    <div class="column">
+      <h3>JAPANESE</h3>
+      <ul id="japaneseWords">
+        <li class="word" *ngFor="let word of japaneseWords">{{ word }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
