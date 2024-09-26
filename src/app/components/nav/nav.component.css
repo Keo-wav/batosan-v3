@@ -1,0 +1,42 @@
+#container {
+  height: 5rem;
+  margin: 3rem 0 3rem 0;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#navlist {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+  margin: 0;
+}
+
+.navlink {
+  list-style-type: none;
+  width: 5rem;
+  height: 4rem;
+  border: 1px solid black;
+  background-color: rgba(4, 4, 4, 0.20);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  border-radius: 4px;
+}
+
+.clicked {
+  scale: 115%;
+  box-shadow: 2px 5px 3px rgba(2, 2, 2, 0.3);
+}
+
+.navlink a {
+  text-decoration: none;
+}
+
+i {
+  color: rgba(27, 26, 26, 0.8);
+}
