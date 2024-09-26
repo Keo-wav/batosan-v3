@@ -11,6 +11,9 @@
 npm-debug.log
 yarn-error.log
 
+# Ignore environment files
+/src/environments/
+
 # IDEs and editors
 .idea/
 .project
