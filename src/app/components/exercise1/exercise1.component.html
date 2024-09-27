@@ -1,14 +1,5 @@
 <div id="container">
   <div class="column">
-    <button class="button" *ngFor="let word of shuffledEnglishWords; let i = index">{{ word }}</button>
-  </div>
-  <div class="column">
-    <button class="button" *ngFor="let word of shuffledJapaneseWords; let i = index">{{ word }}</button>
-  </div>
-</div>
-
-<!--<div id="container">
-  <div class="column">
     <button class="button"
             *ngFor="let word of shuffledJapaneseWords; let i = index"
             (click)="onClick(word, i + shuffledEnglishWords.length)"
@@ -32,4 +23,4 @@
     <p>{{this.alertMessage}}</p>
     <button (click)="closeAlert()">OK</button>
   </div>
-</div>-->
+</div>

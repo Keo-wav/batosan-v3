@@ -6,12 +6,21 @@ import { DictionaryService } from "../../services/dictionary.service";
   templateUrl: './exercise1.component.html',
   styleUrl: './exercise1.component.css'
 })
-export class Exercise1Component implements OnInit {
-  englishWords: string[] = [];
-  japaneseWords: string[] = [];
+export class Exercise1Component implements OnInit {  englishWords: string[] = [];
 
   shuffledEnglishWords: string[] = [];
+  japaneseWords: string[] = [];
   shuffledJapaneseWords: string[] = [];
+
+  firstClickedWord: string | null = null;
+  lastClickedWord: string | null = null;
+  firstWordIndex: number | null = null;
+  lastWordIndex: number | null = null;
+
+  buttonStates: string[] = [];
+
+  isAlertVisible: boolean = false;
+  alertMessage: string = "";
 
   constructor(private dictionaryService: DictionaryService ) { }
 
@@ -19,19 +28,24 @@ export class Exercise1Component implements OnInit {
     setTimeout(() => {
       this.dictionaryService.englishWords$.subscribe(words => {
         this.englishWords = words;
-        console.log('English Words:', this.englishWords);
+        console.log('English Words data : OK');
       });
 
       this.dictionaryService.japaneseWords$.subscribe(words => {
         this.japaneseWords = words;
-        console.log('Japanese Words:', this.japaneseWords);
+        console.log('Japanese Words data : OK');
       });
 
-      this.chooseWords();
+      this.displayEx1();
     }, 1000);
   }
 
-  chooseWords(): void {
+  private displayEx1() {
+    this.chooseWords();
+    this.buttonStates = [];
+  }
+
+  private chooseWords(): void {
     // clear arrays
     this.shuffledEnglishWords = [];
     this.shuffledJapaneseWords = [];
@@ -57,7 +71,7 @@ export class Exercise1Component implements OnInit {
     this.shuffledJapaneseWords = this.shuffle(this.shuffledJapaneseWords);
   }
 
-  shuffle(array: string[]): string[]
+  private shuffle(array: string[]): string[]
   {
     // Clone the array to avoid modifying the original
     const shuffledArray = [...array];
@@ -72,7 +86,106 @@ export class Exercise1Component implements OnInit {
     return shuffledArray;
   }
 
-  // ISSUE : EXERCISE COMPONENT LOADS FIRST, WITH DICTIONARY SERVICE IN CONSTRUCTOR
-  //         AT THAT POINT THE DICTIONARY SERVICE DID NOT HAVE TIME TO RETRIEVE ALL SPREADSHEET DATA SO EX1 COMPONENT DISPLAYS NOTHING.
-  //         AFTER A LITTLE BIT, THE DICTIONARY SERVICE FINISHES TO FETCH WORDS, BUT THE COMPONENT HAS ALREADY DONE ITS NgOnInit PROCESS.
+  onClick(word: string, index: number) {
+    if (this.buttonStates[index] === 'match') {
+      this.showAlert("Already validated this one, my man. Don't be a piece of shit :)")
+      return;
+    }
+
+    if (this.firstClickedWord === null) {
+      this.firstClickedWord = word;
+      this.firstWordIndex = index;
+      this.buttonStates[index] = 'selected';
+      console.log('WORD 1 : ' + this.firstClickedWord);
+    } else {
+      this.lastClickedWord = word;
+      this.lastWordIndex = index;
+
+      if (this.lastClickedWord === this.firstClickedWord) {
+        this.showAlert("That's the same word, you colossal twat");
+      } else if (this.sameLanguageCheck(this.firstClickedWord, this.lastClickedWord)) {
+        this.showAlert("Can't select a word from the same language, you bitch ass");
+      } else {
+        console.log('WORD 2 : ' + this.lastClickedWord);
+        const isMatch = this.pairMatch(this.firstClickedWord, this.lastClickedWord);
+
+        if (isMatch) { // Mark as matched (green)
+          this.buttonStates[this.firstWordIndex!] = 'match';
+          this.buttonStates[this.lastWordIndex!] = 'match';
+          this.resetSelection();
+
+          // Check if all pairs are matched only after marking the last pair as 'match'
+          if (this.areAllPairsMatched()) {
+            console.log('All pairs matched, generating new words...');
+            this.showAlert("Félicitations, pauvre con!");
+
+            // Delay generating new words to allow the UI to update the last matched pair
+            setTimeout(() => {
+              this.displayEx1();
+            }, 1000);
+          }
+        } else { // Mark as mismatched (red)
+          this.buttonStates[this.firstWordIndex!] = 'mismatch';
+          this.buttonStates[this.lastWordIndex!] = 'mismatch';
+
+          // Track mismatches for both words
+          /*          this.updateMismatchStats(this.firstClickedWord);
+                    this.updateMismatchStats(this.lastClickedWord);*/
+
+          setTimeout(() => { // used to clear the mismatch color
+            this.buttonStates[this.firstWordIndex!] = '';
+            this.buttonStates[this.lastWordIndex!] = '';
+            this.resetSelection();
+          }, 400);
+        }
+
+      }
+    }
+  }
+
+  areAllPairsMatched(): boolean {
+    return this.buttonStates.filter(state => state === 'match').length === 10;
+  }
+
+  sameLanguageCheck(firstClickedWord: string, lastClickedWord: string): boolean {
+    return (this.englishWords.includes(firstClickedWord) && this.englishWords.includes(lastClickedWord)) ||
+      (this.japaneseWords.includes(firstClickedWord) && this.japaneseWords.includes(lastClickedWord));
+  }
+
+  resetSelection() {
+    this.firstClickedWord = null;
+    this.lastClickedWord = null;
+    this.firstWordIndex = null;
+    this.lastWordIndex = null;
+  }
+
+  pairMatch(firstClickedWord: string, lastClickedWord: string): boolean {
+    // Check if the first word is English and the second word is Japanese
+    const englishIndex = this.englishWords.indexOf(firstClickedWord);
+    const japaneseIndex = this.japaneseWords.indexOf(lastClickedWord);
+
+    // Check if the first word is Japanese and the second word is English
+    const reverseEnglishIndex = this.englishWords.indexOf(lastClickedWord);
+    const reverseJapaneseIndex = this.japaneseWords.indexOf(firstClickedWord);
+
+    // Match check in both directions
+    if ((englishIndex !== -1 && japaneseIndex === englishIndex) || // index = -1 if word is not in the english array.
+      (reverseJapaneseIndex !== -1 && reverseJapaneseIndex === reverseEnglishIndex)) {
+      console.log("It's a match.");
+      return true;
+    } else {
+      console.log("Not a match.");
+      return false;
+    }
+  }
+
+  showAlert(message: string): void {
+    console.log("Alert triggered with message:", message);
+    this.alertMessage = message;
+    this.isAlertVisible = true;
+  }
+
+  closeAlert(): void {
+    this.isAlertVisible = false;
+  }
 }
