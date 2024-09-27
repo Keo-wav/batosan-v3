@@ -39,8 +39,9 @@ export class DictionaryService {
         if (response.values) {
           const rows = response.values;
           this.wordsDatabase = rows.flat();
+          console.log('DICTIONARY SERVICE | DATA EXTRACT : SUCCESS');
           this.processWords(this.wordsDatabase)
-          console.log('DATA EXTRACT & PROCESS SUCCESS :', this.englishWords, this.japaneseWords);
+          console.log('DICTIONARY SERVICE | DATA PROCESS : SUCCESS');
         } else {
           console.error('No data found in response:', response);
         }

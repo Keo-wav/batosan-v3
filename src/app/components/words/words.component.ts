@@ -15,12 +15,12 @@ export class WordsComponent implements OnInit {
   ngOnInit(): void {
     this.dictionaryService.englishWords$.subscribe(words => {
       this.englishWords = words;
-      console.log('English Words:', this.englishWords);
+      // console.log('English Words:', this.englishWords);
     });
 
     this.dictionaryService.japaneseWords$.subscribe(words => {
       this.japaneseWords = words;
-      console.log('Japanese Words:', this.japaneseWords);
+      // console.log('Japanese Words:', this.japaneseWords);
     });
   }
 
