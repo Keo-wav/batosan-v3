@@ -1,6 +1,6 @@
 #container {
   width: 100%;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 #columns {
@@ -10,15 +10,6 @@
 
 .column {
   flex: 1; /* Each column takes equal space */
-}
-
-h2 {
-  margin-bottom: 0;
-}
-
-h2, h3 {
-  text-align: center;
-  color: white;
 }
 
 ul {
