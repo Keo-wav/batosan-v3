@@ -1,6 +1,7 @@
 #container {
   width: 100%;
   padding: 0 20px;
+  margin-top: 20px;
 }
 
 #columns {
@@ -42,12 +43,11 @@ ul {
 
 input {
   height: 2rem;
-  border: 1px solid #aaa;
-  /*border-radius: 5px;*/
+  border: 1px solid #1b1b1b;
 }
 
 #search i {
-  color: #aaa;
+  color: #1b1b1b;
 }
 
 #search a {
@@ -56,6 +56,6 @@ input {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #aaa;
+  border: 1px solid #1b1b1b;
   cursor: pointer;
 }

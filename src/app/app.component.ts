@@ -7,7 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'batosan-v3';
-  isNavbarVisible: boolean = true;
   isExercise1Visible: boolean = true;
-  isWordsVisible: boolean = false;
 }
