@@ -11,6 +11,8 @@ h1 {
   text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #FF2D95 0px 0px 20px, #FF2D95 0px 0px 30px, #FF2D95 0px 0px 40px, #FF2D95 0px 0px 50px, #FF2D95 0px 0px 75px;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* Disable touch highlight on mobile browsers */
+  outline: none; /* Remove the default focus outline */
 }
 
 h1:hover {
