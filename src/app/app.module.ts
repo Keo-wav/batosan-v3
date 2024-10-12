@@ -8,6 +8,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { WordsComponent } from './components/words/words.component';
 import { HomeComponent } from './components/home/home.component';
 import { Exercise2Component } from './components/exercise2/exercise2.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -18,11 +19,12 @@ import { Exercise2Component } from './components/exercise2/exercise2.component';
     HomeComponent,
     Exercise2Component
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

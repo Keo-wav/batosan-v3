@@ -1,18 +1,18 @@
 <div id="container">
   <div id="search">
-    <input type="text" placeholder=" Type here if ur a cnut">
+    <input type="text" [formControl]="searchControl" placeholder=" Type here if ur a cnut">
     <a (click)="search()"><i class="fa-solid fa-magnifying-glass"></i></a>
   </div>
   <br>
   <div id="columns">
     <div class="column">
       <ul id="englishWords">
-        <li class="word" *ngFor="let word of englishWords">{{ word }}</li>
+        <li class="word" *ngFor="let word of filteredEnglishWords">{{ word }}</li>
       </ul>
     </div>
     <div class="column">
       <ul id="japaneseWords">
-        <li class="word" *ngFor="let word of japaneseWords">{{ word }}</li>
+        <li class="word" *ngFor="let word of filteredJapaneseWords">{{ word }}</li>
       </ul>
     </div>
   </div>
